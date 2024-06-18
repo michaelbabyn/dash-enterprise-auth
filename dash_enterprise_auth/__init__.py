@@ -129,7 +129,6 @@ def get_user_data():
                     "User-Agent": ua_string,
                     "Authorization": authorization,
                 },
-                timeout=10,
             )
             response.raise_for_status()
             data = response.json()
