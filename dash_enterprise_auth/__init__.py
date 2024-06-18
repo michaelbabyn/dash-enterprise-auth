@@ -100,7 +100,7 @@ def _get_decoded_token(name):
     token = _flask.request.cookies.get(name)
     return _b64.b64decode(token)
 
-
+import time
 @_need_request_context
 def get_user_data():
     jwks_url = _os.getenv("DASH_JWKS_URL")
@@ -123,6 +123,7 @@ def get_user_data():
         if info_url:
             tok = _get_decoded_token("kcToken")
             authorization = f"Bearer {tok.decode()}"
+            start_time = time.time()
             response = _requests.get(
                 info_url,
                 headers={
@@ -131,12 +132,14 @@ def get_user_data():
                 },
                 verify=False
             )
+            print(f'response succeeded in {time.time() - start_time} seconds')
             response.raise_for_status()
             data = response.json()
             info.update(data)
 
         return info
     except Exception as e:
+        print(f'response failed in {time.time() - start_time} seconds')
         print("JWT decode error: " + repr(e))
         traceback.print_exc()
     return {}
