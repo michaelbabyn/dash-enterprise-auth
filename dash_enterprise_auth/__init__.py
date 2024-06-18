@@ -108,6 +108,7 @@ def get_user_data():
     if not jwks_url:
         return _json.loads(_flask.request.headers.get("Plotly-User-Data", "{}"))
     try:
+        start_time = time.time()
         jwks_client = UaPyJWKClient(jwks_url)
 
         token = _get_decoded_token("kcIdToken")
@@ -123,7 +124,6 @@ def get_user_data():
         if info_url:
             tok = _get_decoded_token("kcToken")
             authorization = f"Bearer {tok.decode()}"
-            start_time = time.time()
             response = _requests.get(
                 info_url,
                 headers={
