@@ -113,7 +113,7 @@ def get_user_data():
 
         token = _get_decoded_token("kcIdToken")
         signing_key = jwks_client.get_signing_key_from_jwt(token)
-
+        
         info = _jwt.decode(
             token,
             signing_key.key,
@@ -121,9 +121,11 @@ def get_user_data():
             audience=_os.getenv("DASH_AUD", "dash"),
             options={"verify_exp": True},
         )
+        print(f'signing key response succeeded in {time.time() - start_time} seconds')
         if info_url:
             tok = _get_decoded_token("kcToken")
             authorization = f"Bearer {tok.decode()}"
+            start_time = time.time()
             response = _requests.get(
                 info_url,
                 headers={
@@ -132,7 +134,7 @@ def get_user_data():
                 },
                 verify=False
             )
-            print(f'response succeeded in {time.time() - start_time} seconds')
+            print(f'user info response succeeded in {time.time() - start_time} seconds')
             response.raise_for_status()
             data = response.json()
             info.update(data)
