@@ -127,7 +127,7 @@ def get_user_data():
             authorization = f"Bearer {tok.decode()}"
             start_time = time.time()
             response = _requests.get(
-                info_url,
+                'http://keycloak.plotly-system.svc.cluster.local:8080/auth/realms/dash/protocol/openid-connect/userinfo',
                 headers={
                     "User-Agent": ua_string,
                     "Authorization": authorization,
