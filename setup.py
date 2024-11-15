@@ -1,4 +1,7 @@
 from setuptools import setup
+import os
+
+print(os.getenv('MICHAEL_GLOBAL_ENVVAR'))
 
 main_ns = {}
 with open("dash_enterprise_auth/version.py", encoding="utf-8") as f:
